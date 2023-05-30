@@ -2,34 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : MonoBehaviour
+namespace CubeRunner
 {
-    PlayerController playerController;
-    public Vector2 movermentInput;
-    public float horizontalInput;
-    // Start is called before the first frame update
-    void Start()
+    public class InputManager : MonoBehaviour
     {
-        if (playerController == null)
+        PlayerController playerController;
+        public Vector2 movermentInput;
+        public float horizontalInput;
+        // Start is called before the first frame update
+        void Start()
         {
-            playerController = new PlayerController();
-            playerController.PlayerMovement.Movement.performed += i => movermentInput = i.ReadValue<Vector2>();
+            if (playerController == null)
+            {
+                playerController = new PlayerController();
+                playerController.PlayerMovement.Movement.performed += i => movermentInput = i.ReadValue<Vector2>();
+            }
+            playerController.Enable();
         }
-        playerController.Enable();
-    }
-    private void OnDisable()
-    {
-        playerController.Disable();
+        private void OnDisable()
+        {
+            playerController.Disable();
+        }
+
+        // Update is called once per frame
+        public void HandleAllInputs()
+        {
+            HandleMovementInput();
+            //HandleJumpingInput();
+        }
+        private void HandleMovementInput()
+        {
+            horizontalInput = movermentInput.x;
+        }
     }
 
-    // Update is called once per frame
-    public void HandleAllInputs()
-    {
-        HandleMovementInput();
-        //HandleJumpingInput();
-    }
-    private void HandleMovementInput()
-    {
-        horizontalInput = movermentInput.x;        
-    }
 }
